@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# env = environ.Env()
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -25,7 +31,7 @@ SECRET_KEY = '5^@ae^sc7f8l3p7d#^)_yh*co&l4_piwdkunk3o(t1he(2pc98'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS =['localhost','127.0.0.1:8080']
+ALLOWED_HOSTS =['localhost',  '127.0.0.1', '127.0.0.1:8080', "*"]
 
 
 # Application definition
@@ -37,14 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'article',
+	'article',  
 	'rest_framework',
 	'corsheaders'
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    
-    "http://localhost:8080"
+    "http://localhost:8080",
 ] 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,13 +87,16 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'myfirstdb',
-    }
-}
+# DATABASES = {
+#     # 'default': {
+#     #     'ENGINE': 'djongo',
+#     #     'NAME': 'myfirstdb',
+#     # }
+# }
 
+DATABASES = {
+                'default': env.db(),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
